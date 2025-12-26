@@ -1,0 +1,11 @@
+---
+alwaysApply: true
+---
+
+When styling components DO NOT:
+1. Use border-radius unnecessarily
+2. Add glow effects with box-shadow
+3. Add colored borders to items
+4. Add background colors unnecessarily
+
+This site is pretty minimalist. Use borders sparingly to separate content that is not already obviously separate. E.g. in a grid you do not need borders or shaded backgrounds to each item, the visual layout makes it clear theres a grid and things are speparated.
