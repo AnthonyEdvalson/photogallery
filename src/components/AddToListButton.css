@@ -1,0 +1,52 @@
+.add-to-list-button {
+  width: 100%;
+  cursor: pointer;
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-body);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* Default size */
+.add-to-list-button--default {
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* Large size */
+.add-to-list-button--large {
+  padding: 16px 24px;
+  font-size: 16px;
+}
+
+.add-to-list-button:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.add-to-list-button--in-cart {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #000000;
+}
+
+.add-to-list-button--in-cart:hover {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: #000000;
+}
+
+@media (max-width: 600px) {
+  .add-to-list-button--default {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .add-to-list-button--large {
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+}
+
