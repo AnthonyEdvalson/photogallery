@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, memo } from 'react'
 import type { ClosetItem as ClosetItemType } from '../types'
 import { AddToListButton } from './AddToListButton'
 import './ClosetItem.css'
@@ -11,13 +11,11 @@ interface ClosetItemProps {
   isCartEnabled: boolean
 }
 
-export function ClosetItem({ item, inCart, onToggleCart, onOpenDetail, isCartEnabled }: ClosetItemProps) {
+export const ClosetItem = memo(function ClosetItem({ item, inCart, onToggleCart, onOpenDetail, isCartEnabled }: ClosetItemProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isHovering, setIsHovering] = useState(false)
-  const [autoCycleEnabled, setAutoCycleEnabled] = useState(true)
   const [isVisible, setIsVisible] = useState(false)
   const cardRef = useRef<HTMLDivElement | null>(null)
-  const intervalRef = useRef<number | null>(null)
   const hasMultipleImages = item.images.length > 1
 
   // Fade in when card enters viewport
@@ -36,45 +34,19 @@ export function ClosetItem({ item, inCart, onToggleCart, onOpenDetail, isCartEna
     return () => observer.disconnect()
   }, [])
 
-  const nextImage = useCallback(() => {
-    setCurrentImageIndex((prev) => (prev + 1) % item.images.length)
-  }, [item.images.length])
-
-  const prevImage = useCallback(() => {
-    setCurrentImageIndex((prev) => (prev - 1 + item.images.length) % item.images.length)
-  }, [item.images.length])
-
-  // Auto-cycle on hover
-  useEffect(() => {
-    if (isHovering && autoCycleEnabled && hasMultipleImages) {
-      intervalRef.current = window.setInterval(() => {
-        nextImage()
-      }, 1500)
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        window.clearInterval(intervalRef.current)
-        intervalRef.current = null
-      }
-    }
-  }, [isHovering, autoCycleEnabled, hasMultipleImages, nextImage])
-
-  // Reset state when mouse leaves
   const handleMouseLeave = () => {
     setIsHovering(false)
-    setAutoCycleEnabled(true)
     setCurrentImageIndex(0)
   }
 
   const handleNavClick = (e: React.MouseEvent, direction: 'prev' | 'next') => {
     e.stopPropagation()
-    setAutoCycleEnabled(false)
-    if (direction === 'prev') {
-      prevImage()
-    } else {
-      nextImage()
-    }
+    setCurrentImageIndex((prev) => {
+      if (direction === 'prev') {
+        return (prev - 1 + item.images.length) % item.images.length
+      }
+      return (prev + 1) % item.images.length
+    })
   }
 
   const handleCardClick = () => {
@@ -125,9 +97,6 @@ export function ClosetItem({ item, inCart, onToggleCart, onOpenDetail, isCartEna
         {item.name}
         {item.size && <span className="item-size-text"> ({item.size})</span>}
       </h4>
-      {item.featured && (
-        <span className="item-featured-badge">★ Featured</span>
-      )}
       <p className="item-section-text">{item.section}</p>
       <div className="item-card-spacer" />
       {isCartEnabled && (
@@ -138,4 +107,4 @@ export function ClosetItem({ item, inCart, onToggleCart, onOpenDetail, isCartEna
       )}
     </div>
   )
-}
+})

@@ -6,37 +6,56 @@
 .section-selector-trigger {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0;
+  gap: 10px;
+  padding: 10px 14px;
   background: none;
-  border: none;
+  border: 1px solid var(--border);
   cursor: pointer;
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
+  transition: border-color 0.2s ease;
+  min-width: 180px;
+}
+
+.section-selector-trigger:hover {
+  border-color: var(--accent);
+}
+
+.section-selector-trigger--active {
+  border-color: var(--accent);
+}
+
+.section-selector-filter-icon {
+  display: none;
+  color: var(--fg);
+  flex-shrink: 0;
+}
+
+.section-selector-trigger--active .section-selector-filter-icon {
+  color: var(--accent);
 }
 
 .section-selector-label {
-  font-size: 32px;
-  font-weight: 600;
-  color: var(--color-accent);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--fg);
   letter-spacing: 0.02em;
+  flex: 1;
+  text-align: left;
 }
 
 .section-selector-arrow {
-  color: var(--color-text-muted);
-  transition: transform 0.2s ease;
-  margin-left: 4px;
+  color: var(--fg);
+  opacity: 0.5;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  flex-shrink: 0;
 }
 
 .section-selector-arrow--open {
   transform: rotate(180deg);
 }
 
-.section-selector-trigger:hover .section-selector-label {
-  color: var(--color-accent-hover);
-}
-
 .section-selector-trigger:hover .section-selector-arrow {
-  color: var(--color-text);
+  opacity: 0.8;
 }
 
 .section-dropdown {
@@ -46,8 +65,8 @@
   min-width: 240px;
   max-height: 400px;
   overflow-y: auto;
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
   z-index: 100;
   animation: dropdownSlide 0.15s ease-out;
 }
@@ -65,7 +84,7 @@
 
 .section-dropdown-divider {
   height: 1px;
-  background: var(--color-border);
+  background: var(--border);
 }
 
 .section-option {
@@ -95,24 +114,47 @@
 
 .section-option-name {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
-  color: var(--color-text);
+  color: var(--fg);
 }
 
 .section-option--active .section-option-name {
-  color: var(--color-accent);
+  color: var(--accent);
 }
 
 .section-option-count {
   font-family: var(--font-body);
   font-size: 12px;
-  color: var(--color-text-muted);
+  color: var(--fg);
+  opacity: 0.6;
+}
+
+.section-group-label {
+  padding: 8px 14px 4px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fg);
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 @media (max-width: 600px) {
-  .section-selector-label {
-    font-size: 24px;
+  .section-selector-trigger {
+    min-width: unset;
+    padding: 8px 10px;
+    gap: 0;
+  }
+  
+  .section-selector-filter-icon {
+    display: block;
+  }
+  
+  .section-selector-label,
+  .section-selector-arrow {
+    display: none;
   }
   
   .section-dropdown {

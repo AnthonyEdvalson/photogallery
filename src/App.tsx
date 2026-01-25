@@ -1,8 +1,11 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useDeferredValue } from 'react'
+import Fuse from 'fuse.js'
 import { useAirtable } from './hooks/useAirtable'
 import { ClosetHeader } from './components/ClosetHeader'
 import { ClosetGrid } from './components/ClosetGrid'
-import { Cart, CartToggleButton } from './components/Cart'
+import { Cart } from './components/Cart'
+import { Footer } from './components/Footer'
+import type { FilterSelection } from './types'
 import './App.css'
 
 const CART_STORAGE_KEY = 'photogallery-cart'
@@ -47,10 +50,11 @@ function loadCartFromStorage(): Set<string> {
 }
 
 function App() {
-  const { items, sections, loading, loadingMore, error } = useAirtable();
-  const [selectedSection, setSelectedSection] = useState<string>('All')
+  const { items, sections, collections, loading, loadingMore, error } = useAirtable();
+  const [selectedFilter, setSelectedFilter] = useState<FilterSelection>({ type: 'all' })
   const [cart, setCart] = useState<Set<string>>(() => loadCartFromStorage())
   const [searchQuery, setSearchQuery] = useState<string>('')
+  const deferredSearchQuery = useDeferredValue(searchQuery)
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [selectedItemUid, setSelectedItemUid] = useState<number | null>(() => getItemUidFromHash())
   
@@ -111,7 +115,7 @@ Speak friend and enter.`);
     setItemUidInHash(null)
   }, [])
 
-  function toggleCart(itemId: string) {
+  const toggleCart = useCallback((itemId: string) => {
     setCart(prev => {
       const next = new Set(prev)
       if (next.has(itemId)) {
@@ -121,7 +125,7 @@ Speak friend and enter.`);
       }
       return next
     })
-  }
+  }, [])
 
   function removeFromCart(itemId: string) {
     setCart(prev => {
@@ -131,14 +135,32 @@ Speak friend and enter.`);
     })
   }
 
-  const filteredItems = items.filter(item => {
-    const matchesSection = selectedSection === 'All' || item.section === selectedSection
-    const query = searchQuery.toLowerCase().trim()
-    const matchesSearch = query === '' || 
-      item.name.toLowerCase().includes(query) ||
-      (item.tags && item.tags.toLowerCase().includes(query))
-    return matchesSection && matchesSearch
-  })
+  const fuse = useMemo(() => new Fuse(items, {
+    keys: ['name', 'tags', 'section', 'collections'],
+    threshold: 0.9,
+    ignoreLocation: true,
+  }), [items])
+
+  const filteredItems = useMemo(() => {
+    const query = deferredSearchQuery.trim()
+    
+    // Get search results (or all items if no query)
+    let results = query ? fuse.search(query).map(r => r.item) : items
+    
+    // Apply filter
+    if (selectedFilter.type === 'section') {
+      results = results.filter(item => item.section === selectedFilter.value)
+    } else if (selectedFilter.type === 'collection') {
+      results = results.filter(item => item.collections.includes(selectedFilter.value))
+    }
+    
+    // Easter egg: only show wapon for exact match
+    if (query !== 'WAPON') {
+      results = results.filter(item => item.id !== 'wapon-10000')
+    }
+    
+    return results
+  }, [items, fuse, selectedFilter, deferredSearchQuery])
 
   const cartItems = items.filter(item => cart.has(item.id))
   const selectedItem = selectedItemUid !== null ? items.find(item => item.uid === selectedItemUid) ?? null : null
@@ -158,8 +180,9 @@ Speak friend and enter.`);
         items={filteredItems}
         allItems={items}
         sections={sections}
-        selectedSection={selectedSection}
-        onSelectSection={setSelectedSection}
+        collections={collections}
+        selectedFilter={selectedFilter}
+        onSelectFilter={setSelectedFilter}
         cart={cart}
         onToggleCart={toggleCart}
         searchQuery={searchQuery}
@@ -169,14 +192,10 @@ Speak friend and enter.`);
         onCloseItem={handleCloseItem}
         loadingMore={loadingMore}
         isCartEnabled={isCartEnabled}
+        cartItemCount={cartItems.length}
+        onOpenCart={() => setIsCartOpen(true)}
       />
-
-      {isCartEnabled && (
-        <CartToggleButton 
-          itemCount={cartItems.length} 
-          onClick={() => setIsCartOpen(true)} 
-        />
-      )}
+      <Footer isClient={clientName !== null} />
 
       {isCartEnabled && (
         <Cart

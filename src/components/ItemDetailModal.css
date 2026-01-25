@@ -2,7 +2,7 @@
 .item-detail-overlay {
   position: fixed;
   inset: 0;
-  background: var(--color-bg);
+  background: var(--bg);
   z-index: 1000;
   overflow-y: auto;
   animation: fadeIn 0.2s ease;
@@ -26,13 +26,14 @@
   right: 24px;
   width: 44px;
   height: 44px;
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  color: var(--fg);
+  opacity: 0.6;
   font-size: 28px;
   line-height: 1;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: opacity 0.15s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,8 +41,7 @@
 }
 
 .item-detail-close:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  opacity: 1;
 }
 
 /* Split Layout */
@@ -59,7 +59,7 @@
   align-content: center;
   gap: 4px;
   padding: 4px;
-  background: var(--color-bg);
+  background: var(--bg);
 }
 
 .item-detail-image {
@@ -71,8 +71,8 @@
 
 /* Details Panel */
 .item-detail-info {
-  border-left: 1px solid var(--color-border);
-  background: var(--color-bg-elevated);
+  border-left: 1px solid var(--border);
+  background: var(--bg-elevated);
 }
 
 .item-detail-info-sticky {
@@ -86,7 +86,8 @@
 .item-detail-section {
   margin: 0 0 8px;
   font-size: 12px;
-  color: var(--color-text-muted);
+  color: var(--fg);
+  opacity: 0.6;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -95,8 +96,8 @@
   margin: 0 0 32px;
   font-family: var(--font-heading);
   font-size: 28px;
-  font-weight: 500;
-  color: var(--color-accent);
+  font-weight: 400;
+  color: var(--accent);
   line-height: 1.2;
 }
 
@@ -109,7 +110,8 @@
   margin: 0 0 8px;
   font-size: 11px;
   font-weight: 600;
-  color: var(--color-text-muted);
+  color: var(--fg);
+  opacity: 0.6;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -117,7 +119,7 @@
 .item-detail-note {
   margin: 0;
   font-size: 14px;
-  color: var(--color-text);
+  color: var(--fg);
   line-height: 1.6;
 }
 
@@ -135,16 +137,17 @@
 .item-detail-tag {
   padding: 6px 12px;
   background: transparent;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--border);
   font-size: 12px;
-  color: var(--color-text-muted);
+  color: var(--fg);
+  opacity: 0.6;
 }
 
 /* Meta Info */
 .item-detail-meta {
   margin-bottom: 32px;
   padding-top: 24px;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--border);
 }
 
 .item-detail-meta-row {
@@ -155,12 +158,13 @@
 
 .item-detail-meta-label {
   font-size: 13px;
-  color: var(--color-text-muted);
+  color: var(--fg);
+  opacity: 0.6;
 }
 
 .item-detail-meta-value {
   font-size: 13px;
-  color: var(--color-text);
+  color: var(--fg);
 }
 
 /* Actions */
@@ -176,7 +180,7 @@
 
   .item-detail-info {
     border-left: none;
-    border-top: 1px solid var(--color-border);
+    border-top: 1px solid var(--border);
   }
 
   .item-detail-info-sticky {

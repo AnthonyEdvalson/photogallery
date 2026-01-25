@@ -1,10 +1,10 @@
 .closet-header {
   width: 100%;
-  background: var(--color-bg);
+  background: var(--bg);
 }
 
 a {
-  color: var(--color-accent);
+  color: var(--accent);
   text-decoration: underline;
   text-decoration-thickness: 1px;
 }
@@ -13,7 +13,7 @@ a {
 .closet-header__banner {
   position: relative;
   width: 100%;
-  height: clamp(300px, 40vw, 500px);
+  height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -27,18 +27,19 @@ a {
   height: 100%;
   object-fit: cover;
   z-index: 0;
+  filter: brightness(0.4);
 }
 
 .closet-header__banner-title {
   position: relative;
   z-index: 1;
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-size: clamp(3rem, 10vw, 7rem);
-  font-weight: 600;
-  font-style: italic;
+  font-weight: 400;
+  font-style: normal;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--accent);
   margin: 0;
   text-align: center;
   text-shadow: 
@@ -46,18 +47,33 @@ a {
     0 0 60px rgba(206, 144, 41, 0.3);
 }
 
+.font-alt-char {
+  font-feature-settings: "ss01";
+}
+
+.font-alt-char-ss03 {
+  font-feature-settings: "ss03";
+}
+
 /* Info section below banner */
 .closet-header__info {
+  position: relative;
   padding: 60px 20px 80px;
-  background: linear-gradient(
-    180deg,
-    rgba(20, 15, 10, 0.9) 0%,
-    var(--color-bg) 100%
-  );
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--border);
+}
+
+.closet-header__info::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('../assets/header2.webp') top 25% center / cover no-repeat;
+  filter: brightness(0.2);
+  z-index: 0;
 }
 
 .closet-header__hero {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,8 +96,14 @@ a {
   height: auto;
   aspect-ratio: 2 / 3;
   object-fit: cover;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  clip-path: url(#arch-clip);
+}
+
+.closet-header__image-left {
+  transform: rotate(-13deg) scale(0.8);
+}
+
+.closet-header__image-right {
+  filter: brightness(2);
 }
 
 .closet-header__content {
@@ -95,16 +117,16 @@ a {
   font-size: clamp(1.25rem, 2.5vw, 1.75rem);
   font-weight: 400;
   font-style: italic;
-  color: var(--color-text);
+  color: var(--fg);
   margin: 0 0 32px;
   opacity: 0.9;
 }
 
 .closet-header__text {
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-size: 1.1rem;
   line-height: 1.7;
-  color: var(--color-text);
+  color: var(--fg);
   font-style: italic;
 }
 
@@ -121,20 +143,7 @@ a {
   font-size: 1.2rem;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1100px) {
-  .closet-header__hero {
-    gap: 40px;
-  }
-  
-  .closet-header__image-left,
-  .closet-header__image-right {
-    flex: 0 0 220px;
-    max-width: 220px;
-  }
-}
-
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .closet-header__info {
     padding: 40px 20px 60px;
   }
@@ -151,10 +160,11 @@ a {
   
   .closet-header__content {
     max-width: 600px;
+    flex: 1;
   }
   
   .closet-header__banner {
-    height: clamp(200px, 35vw, 350px);
+    height: 50vh;
   }
 }
 
@@ -170,10 +180,6 @@ a {
   
   .closet-header__subtitle {
     margin-bottom: 24px;
-  }
-  
-  .closet-header__banner {
-    height: 200px;
   }
 }
 

@@ -6,7 +6,12 @@ export interface ClosetItem {
   note: string
   section: string
   tags: string
-  featured: boolean
+  collections: string[]
   size: string
 }
+
+export type FilterSelection = 
+  | { type: 'all' }
+  | { type: 'section'; value: string }
+  | { type: 'collection'; value: string }
 

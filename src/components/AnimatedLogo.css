@@ -1,0 +1,48 @@
+.animated-logo-container {
+  width: 200px;
+  height: auto;
+  display: block;
+}
+
+.animated-logo-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.logo-border-path {
+  fill: var(--accent);
+}
+
+.logo-animated-base {
+  fill: var(--accent);
+  fill-opacity: 0;
+  stroke: var(--accent);
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.animated-logo-path {
+  animation: 
+    drawStroke var(--draw-duration) ease-out var(--draw-delay) forwards,
+    fillPath 0.8s ease-in-out var(--fill-delay) forwards;
+}
+
+@keyframes drawStroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fillPath {
+  to {
+    fill-opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .animated-logo-container {
+    width: 140px;
+  }
+}

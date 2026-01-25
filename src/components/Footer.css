@@ -1,0 +1,129 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+}
+
+/* CTA Section */
+.footer-cta {
+  position: relative;
+  width: 100%;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.footer-cta__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 10%;
+  filter: brightness(0.35);
+  z-index: 0;
+}
+
+.footer-cta__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.footer-cta__heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 24px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+.footer-cta__subtext {
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--fg);
+  margin: 0 0 32px;
+  opacity: 0.9;
+}
+
+.footer-cta__button {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-style: italic;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 14px 48px;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.footer-cta__button:hover {
+  opacity: 0.85;
+}
+
+/* Logo Section */
+.footer__logo {
+  padding: 60px 20px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-logo {
+  width: 200px;
+  height: auto;
+  display: block;
+}
+
+/* Subfooter */
+.footer__sub {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  color: var(--fg);
+  opacity: 0.4;
+}
+
+@media (max-width: 600px) {
+  .footer-cta {
+    min-height: 400px;
+  }
+
+  .footer-cta__content {
+    padding: 40px 16px;
+  }
+
+  .footer-cta__subtext {
+    font-size: 1rem;
+  }
+
+  .footer__logo {
+    padding: 40px 20px;
+  }
+  
+  .footer-logo {
+    width: 100px;
+  }
+
+  .footer__sub {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+}
+

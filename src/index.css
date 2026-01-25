@@ -1,14 +1,50 @@
+/* Font Faces */
+@font-face {
+  font-family: 'Berold';
+  src: url('./assets/berold_artistic.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ascendant';
+  src: url('./assets/AscendantSerifRegular.woff2') format('woff2'),
+       url('./assets/AscendantSerifRegular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Ascendant';
+  src: url('./assets/AscendantSerif-Bold.woff2') format('woff2'),
+       url('./assets/AscendantSerif-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* CSS Variables */
 :root {
-  --color-bg: #000000;
-  --color-bg-elevated: #0a0a0a;
-  --color-accent: rgb(206, 144, 41);
-  --color-accent-hover: rgb(226, 164, 61);
-  --color-text: #ffffff;
-  --color-text-muted: rgba(255, 255, 255, 0.6);
-  --color-border: rgba(255, 255, 255, 0.12);
-  --font-heading: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-  --font-body: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+  --bg: #111111;
+  --bg-elevated: #1a1a1a;
+  /* --fg: #ffffff; */
+  /* --accent: rgb(206, 144, 41); */
+  /* --accent-hover: rgb(226, 164, 61); */
+  --border: rgba(255, 255, 255, 0.12);
+  /* --bg: #372539; */
+  /* --bg-elevated: #49334d; */
+  --fg: #f8f5e6;
+  --accent: #cfa257;
+  --accent-hover: #ecc279;
+  /* --border: #37253929; */
+
+  --badge-notification: #e17055;
+  
+  --font-display: 'Berold', Georgia, 'Times New Roman', serif;
+  --font-heading: 'Ascendant', Georgia, 'Times New Roman', serif;
+  --font-body: 'Volkhov', Georgia, 'Times New Roman', serif;
 }
 
 /* Minimal reset */
@@ -26,8 +62,8 @@ html, body {
 body {
   font-family: var(--font-body);
   font-weight: 400;
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  background-color: var(--bg);
+  color: var(--fg);
   line-height: 1.5;
   -webkit-text-size-adjust: 100%;
 }
@@ -42,6 +78,6 @@ body:has(.item-detail-overlay) {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  font-weight: 500;
-  color: var(--color-accent);
+  font-weight: 400;
+  color: var(--accent);
 }

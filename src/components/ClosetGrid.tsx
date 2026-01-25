@@ -1,6 +1,10 @@
-import type { ClosetItem as ClosetItemType } from '../types'
+import { useCallback } from 'react'
+import type { ClosetItem as ClosetItemType, FilterSelection } from '../types'
+import { CartButton } from './CartButton'
 import { ClosetItem } from './ClosetItem'
+import { EmptyState } from './EmptyState'
 import { ItemDetailModal } from './ItemDetailModal'
+import { SearchInput } from './SearchInput'
 import { SectionSelector } from './SectionSelector'
 import './ClosetGrid.css'
 
@@ -8,8 +12,9 @@ interface ClosetGridProps {
   items: ClosetItemType[]
   allItems: ClosetItemType[]
   sections: string[]
-  selectedSection: string
-  onSelectSection: (section: string) => void
+  collections: string[]
+  selectedFilter: FilterSelection
+  onSelectFilter: (filter: FilterSelection) => void
   cart: Set<string>
   onToggleCart: (itemId: string) => void
   searchQuery: string
@@ -19,14 +24,17 @@ interface ClosetGridProps {
   onCloseItem: () => void
   loadingMore: boolean
   isCartEnabled: boolean
+  cartItemCount: number
+  onOpenCart: () => void
 }
 
 export function ClosetGrid({ 
   items, 
   allItems,
   sections,
-  selectedSection, 
-  onSelectSection,
+  collections,
+  selectedFilter, 
+  onSelectFilter,
   cart, 
   onToggleCart, 
   searchQuery, 
@@ -36,41 +44,39 @@ export function ClosetGrid({
   onCloseItem,
   isCartEnabled,
   loadingMore,
+  cartItemCount,
+  onOpenCart,
 }: ClosetGridProps) {
-  const handleOpenDetail = (item: ClosetItemType) => {
+  const handleOpenDetail = useCallback((item: ClosetItemType) => {
     onOpenItem(item.uid)
-  }
+  }, [onOpenItem])
 
-  // Check if we're in a filtered state (search or specific section)
-  const isFiltered = searchQuery.trim() !== '' || selectedSection !== 'All'
+  // Check if we're in a filtered state (search or specific filter)
+  const isFiltered = searchQuery.trim() !== '' || selectedFilter.type !== 'all'
   
-  // Get featured items for the dedicated featured section
-  const featuredItems = !isFiltered ? items.filter(item => item.featured) : []
-  
-  // Sort items to put featured first, then sort by original order
-  const sortWithFeaturedFirst = (itemsToSort: ClosetItemType[]) => {
-    return [...itemsToSort].sort((a, b) => {
-      if (a.featured && !b.featured) return -1
-      if (!a.featured && b.featured) return 1
-      return 0
-    })
-  }
+  // Get featured collections (those starting with *)
+  const featuredCollections = collections.filter(c => c.startsWith('*'))
 
-  // Group items by section when showing all
-  const groupedItems = selectedSection === 'All' 
+  // Build grouped items for the "All" view
+  const groupedItems = selectedFilter.type === 'all' && !isFiltered
     ? (() => {
-        const groups: { section: string; items: ClosetItemType[] }[] = []
+        const groups: { header: string; items: ClosetItemType[]; key: string; featured: boolean }[] = []
         
-        // Add featured section at the start if not filtered and there are featured items
-        if (!isFiltered && featuredItems.length > 0) {
-          groups.push({ section: 'Featured', items: featuredItems })
-        }
+        // Add featured collection sections at the top
+        featuredCollections.forEach(collection => {
+          const collectionItems = items.filter(item => item.collections.includes(collection))
+          if (collectionItems.length > 0) {
+            // Strip the * prefix for display
+            const displayName = collection.slice(1)
+            groups.push({ header: displayName, items: collectionItems, key: `collection-${collection}`, featured: true })
+          }
+        })
         
-        // Add regular sections with featured items sorted first
+        // Add regular sections
         sections.forEach(section => {
           const sectionItems = items.filter(item => item.section === section)
           if (sectionItems.length > 0) {
-            groups.push({ section, items: sortWithFeaturedFirst(sectionItems) })
+            groups.push({ header: section, items: sectionItems, key: `section-${section}`, featured: false })
           }
         })
         
@@ -82,41 +88,32 @@ export function ClosetGrid({
     <div className="items-container">
       <div className="grid-header">
         <div className="header-top">
-          <SectionSelector
-            sections={sections}
-            selectedSection={selectedSection}
-            onSelectSection={onSelectSection}
-            allItems={allItems}
-          />
-
-          <div className="search-container">
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Search"
-              value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
+          <div className="filter-search-group">
+            <SectionSelector
+              sections={sections}
+              collections={collections}
+              selectedFilter={selectedFilter}
+              onSelectFilter={onSelectFilter}
+              allItems={allItems}
             />
-            {searchQuery && (
-              <button 
-                className="search-clear" 
-                onClick={() => onSearchChange('')}
-                aria-label="Clear search"
-              >
-                ×
-              </button>
-            )}
+            <SearchInput value={searchQuery} onChange={onSearchChange} />
           </div>
+
+          {isCartEnabled && (
+            <CartButton itemCount={cartItemCount} onClick={onOpenCart} />
+          )}
         </div>
       </div>
       
-      {groupedItems ? (
+      {items.length === 0 && isFiltered ? (
+        <EmptyState searchQuery={searchQuery} selectedFilter={selectedFilter} />
+      ) : groupedItems ? (
         <div className="grouped-items">
-          {groupedItems.map(({ section, items: sectionItems }) => (
-            <div key={section} className="section-group">
-              <h3 className="section-group-header">{section}</h3>
+          {groupedItems.map(({ header, items: groupItems, key, featured }) => (
+            <div key={key} className={`section-group ${featured ? 'section-group--featured' : ''}`}>
+              <h3 className="section-group-header">{header}</h3>
               <div className="items-grid">
-                {sectionItems.map(item => (
+                {groupItems.map(item => (
                   <ClosetItem
                     key={item.id}
                     item={item}
@@ -132,7 +129,7 @@ export function ClosetGrid({
         </div>
       ) : (
         <div className="items-grid">
-          {sortWithFeaturedFirst(items).map(item => (
+          {items.map(item => (
             <ClosetItem
               key={item.id}
               item={item}

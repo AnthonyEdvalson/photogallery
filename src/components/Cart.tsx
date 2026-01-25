@@ -39,12 +39,17 @@ interface CartProps {
   clientName: string
 }
 
+const _a = 'aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vZm9ybXMvZC9lLw'
+const _b = 'MUZBSXBRTFNlMjViODBndDNLZ2xpeFoyaUZZUm5uZlBVTHIzNDVHZTlseWFPbEoxOGRSc0NTNmc'
+const _c = 'L3ZpZXdmb3JtP3VzcD1wcF91cmwmZW50cnkuMTg4MDgzODY0OD0'
+const _d = 'JmVudHJ5LjE4OTk5ODM3Nj0'
+
 export function Cart({ items, onRemoveItem, isOpen, onClose, clientName }: CartProps) {
-  const handleSendEmail = () => {
-    const itemNames = items.map(item => `• ${item.name} (${item.section})`).join('\n')
-    const emailBody = `Hi,\n\nMy name is ${clientName}. I would like to request the following items for my upcoming shoot:\n\n${itemNames}\n\nPlease let me know availability and next steps.\n\nThank you!`
-    const mailtoLink = `mailto:stylist@example.com?subject=Clothing Pull Request - ${clientName}&body=${encodeURIComponent(emailBody)}`
-    window.location.href = mailtoLink
+  const handleSubmit = () => {
+    const titleCaseName = clientName.replace(/\b\w/g, c => c.toUpperCase())
+    const itemList = items.map(item => `- ${item.name} (${item.section})`).join('\n')
+    const formUrl = atob(_a) + atob(_b) + atob(_c) + encodeURIComponent(titleCaseName) + atob(_d) + encodeURIComponent(itemList)
+    window.open(formUrl, '_blank')
   }
 
   if (!isOpen) return null
@@ -74,39 +79,23 @@ export function Cart({ items, onRemoveItem, isOpen, onClose, clientName }: CartP
           <div className="cart-info-panel">
             <div className="cart-info-content">
               <h2>Ready to Submit?</h2>
-              
+
               <div className="cart-info-section">
                 <h3>What happens next</h3>
                 <p>
-                  Once you've finalized your selection, our styling team will receive your 
-                  request and begin preparing your equipment. We'll coordinate with the production 
-                  team to ensure everything is ready for your shoot date.
-                </p>
-              </div>
-
-              <div className="cart-info-section">
-                <h3>Before the shoot</h3>
-                <p>
-                  A member of our wardrobe department will reach out within 24-48 hours to 
-                  confirm availability and discuss any sizing requirements. We'll arrange 
-                  delivery or pickup based on your production schedule.
-                </p>
-              </div>
-
-              <div className="cart-info-section">
-                <h3>Day of shoot</h3>
-                <p>
-                  All selected pieces will be steamed, pressed, and organized by look. 
-                  Our team can provide on-set support if needed. Please return all equipment 
-                  within 48 hours of wrap, or additional fees may apply.
+                  When you click the submit button, you'll be taken to a form pre-filled with your selections.
+                  Submit the form, and we will review your
+                  request / confirm that your items are available on the day of your shoot.
+                  If there are any conflicts, we'll let you know and suggest items
+                  of similar nature. Using your requested items and the styling questionnaire,
+                  we will present you with a plan for your photoshoot!
                 </p>
               </div>
 
               <div className="cart-info-section">
                 <h3>Questions?</h3>
                 <p>
-                  Contact our styling coordinator at stylist@example.com or 
-                  call the wardrobe department directly for urgent requests.
+                  We're here to help! Contact <a href="mailto:studio@oliviaedvalson.com" target="_blank">studio@oliviaedvalson.com</a> with any questions you might have. 
                 </p>
               </div>
             </div>
@@ -114,10 +103,10 @@ export function Cart({ items, onRemoveItem, isOpen, onClose, clientName }: CartP
             <div className="cart-submit-section">
               <button 
                 className="cart-submit-button"
-                onClick={handleSendEmail}
+                onClick={handleSubmit}
                 disabled={items.length === 0}
               >
-                Send Request via Email
+                Submit Request
               </button>
             </div>
           </div>
@@ -127,22 +116,3 @@ export function Cart({ items, onRemoveItem, isOpen, onClose, clientName }: CartP
   )
 }
 
-interface CartToggleButtonProps {
-  itemCount: number
-  onClick: () => void
-}
-
-export function CartToggleButton({ itemCount, onClick }: CartToggleButtonProps) {
-  return (
-    <button className="cart-toggle-button" onClick={onClick} aria-label="Open cart">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="9" cy="21" r="1"></circle>
-        <circle cx="20" cy="21" r="1"></circle>
-        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-      </svg>
-      {itemCount > 0 && (
-        <span className="cart-toggle-badge">{itemCount}</span>
-      )}
-    </button>
-  )
-}
