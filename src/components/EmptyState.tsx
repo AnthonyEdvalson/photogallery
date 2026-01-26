@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import type { FilterSelection } from '../types'
 import './EmptyState.css'
 
