@@ -1,13 +1,17 @@
+import { useRef } from 'react'
 import './ClosetHeader.css'
 import headingImgLeft from '../assets/heading-img-left.png'
 import headingImgRight from '../assets/heading-img-right.png'
 import headingBackground from '../assets/heading-bg.webp'
+import { ScrollIndicator } from './ScrollIndicator'
 
 type ClosetHeaderProps = {
   clientName: string | null
 }
 
 export function ClosetHeader({ clientName }: ClosetHeaderProps) {
+  const infoRef = useRef<HTMLDivElement | null>(null)
+
   return (
     <header className="closet-header">
       <div className="closet-header__banner">
@@ -17,9 +21,10 @@ export function ClosetHeader({ clientName }: ClosetHeaderProps) {
           className="closet-header__banner-image"
         />
         <h1 className="closet-header__banner-title">{clientName ? `${clientName}'s ` : ''}<span className="font-alt-char">F</span>antasy <span className="font-alt-char">C</span>loset</h1>
+        <ScrollIndicator targetRef={infoRef} />
       </div>
 
-      <div className="closet-header__info">
+      <div className="closet-header__info" ref={infoRef}>
         <div className="closet-header__hero">
           <div className="closet-header__image-left">
             <img 
