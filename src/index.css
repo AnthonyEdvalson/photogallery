@@ -1,4 +1,3 @@
-/* Font Faces */
 @font-face {
   font-family: 'Berold';
   src: url('./assets/berold_artistic.otf') format('opentype');
@@ -25,20 +24,13 @@
   font-display: swap;
 }
 
-/* CSS Variables */
 :root {
   --bg: #111111;
   --bg-elevated: #1a1a1a;
-  /* --fg: #ffffff; */
-  /* --accent: rgb(206, 144, 41); */
-  /* --accent-hover: rgb(226, 164, 61); */
   --border: rgba(255, 255, 255, 0.12);
-  /* --bg: #372539; */
-  /* --bg-elevated: #49334d; */
   --fg: #f8f5e6;
   --accent: #cfa257;
   --accent-hover: #ecc279;
-  /* --border: #37253929; */
 
   --badge-notification: #e17055;
   
@@ -47,7 +39,6 @@
   --font-body: 'Volkhov', Georgia, 'Times New Roman', serif;
 }
 
-/* Minimal reset */
 * {
   box-sizing: border-box;
 }

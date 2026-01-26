@@ -3,7 +3,6 @@
   flex-direction: column;
 }
 
-/* CTA Section */
 .footer-cta {
   position: relative;
   width: 100%;
@@ -70,7 +69,6 @@
   opacity: 0.85;
 }
 
-/* Logo Section */
 .footer__logo {
   padding: 60px 20px;
   background: var(--bg);
@@ -86,7 +84,6 @@
   display: block;
 }
 
-/* Subfooter */
 .footer__sub {
   display: flex;
   justify-content: space-between;

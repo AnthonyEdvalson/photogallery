@@ -18,7 +18,6 @@ export const ClosetItem = memo(function ClosetItem({ item, inCart, onToggleCart,
   const cardRef = useRef<HTMLDivElement | null>(null)
   const hasMultipleImages = item.images.length > 1
 
-  // Fade in when card enters viewport
   useEffect(() => {
     const card = cardRef.current
     if (!card) return

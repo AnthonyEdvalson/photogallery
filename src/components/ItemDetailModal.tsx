@@ -22,7 +22,6 @@ export function ItemDetailModal({ item, inCart, onToggleCart, onClose, isCartEna
     }
   }, [])
 
-  // Close on escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -40,7 +39,6 @@ export function ItemDetailModal({ item, inCart, onToggleCart, onClose, isCartEna
     }
   }
 
-  // Parse tags if they exist
   const tags = item.tags ? item.tags.split(',').map(t => t.trim()).filter(Boolean) : []
 
   return (
@@ -51,7 +49,6 @@ export function ItemDetailModal({ item, inCart, onToggleCart, onClose, isCartEna
         </button>
         
         <div className="item-detail-layout">
-          {/* Images Section */}
           <div className={`item-detail-images ${item.images.length === 1 ? 'item-detail-images--single' : ''}`}>
             {item.images.map((img, idx) => (
               <img
@@ -63,7 +60,6 @@ export function ItemDetailModal({ item, inCart, onToggleCart, onClose, isCartEna
             ))}
           </div>
 
-          {/* Details Panel */}
           <div className="item-detail-info">
             <div className="item-detail-info-sticky">
               <h2 className="item-detail-title">{item.name}</h2>

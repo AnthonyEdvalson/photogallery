@@ -9,13 +9,11 @@
   transition: all 0.2s ease;
 }
 
-/* Default size */
 .add-to-list-button--default {
   padding: 10px;
   font-size: 14px;
 }
 
-/* Large size */
 .add-to-list-button--large {
   padding: 16px 24px;
   font-size: 16px;

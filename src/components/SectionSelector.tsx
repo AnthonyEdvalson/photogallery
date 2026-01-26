@@ -13,7 +13,6 @@ interface SectionSelectorProps {
 function getFilterLabel(filter: FilterSelection): string {
   if (filter.type === 'all') return 'All Equipment'
   if (filter.type === 'collection') {
-    // Strip leading * from featured collections for display
     return filter.value.startsWith('*') ? filter.value.slice(1) : filter.value
   }
   return filter.value
@@ -50,7 +49,6 @@ export function SectionSelector({
     setDropdownOpen(false)
   }
 
-  // Sort collections: featured (*-prefixed) first, then alphabetical
   const sortedCollections = [...collections].sort((a, b) => {
     const aFeatured = a.startsWith('*')
     const bFeatured = b.startsWith('*')

@@ -1,4 +1,3 @@
-/* Item Card */
 .item-card {
   display: flex;
   flex-direction: column;
@@ -17,7 +16,6 @@
   flex-grow: 1;
 }
 
-/* Image Container */
 .item-image-container {
   position: relative;
   overflow: hidden;
@@ -35,7 +33,6 @@
   transform: scale(1.02);
 }
 
-/* Navigation Buttons */
 .image-nav-button {
   position: absolute;
   top: 50%;
@@ -73,7 +70,6 @@
   right: 8px;
 }
 
-/* Item Details */
 .item-title {
   margin: 6px 0 4px;
   font-family: var(--font-heading);
@@ -95,7 +91,6 @@
   opacity: 0.6;
 }
 
-/* Button spacing in item card */
 .item-card .add-to-list-button {
   margin-top: 14px;
 }

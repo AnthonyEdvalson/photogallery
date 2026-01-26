@@ -51,18 +51,13 @@ export function ClosetGrid({
     onOpenItem(item.uid)
   }, [onOpenItem])
 
-  // Check if we're in a filtered state (search or specific filter)
   const isFiltered = searchQuery.trim() !== '' || selectedFilter.type !== 'all'
-  
-  // Get featured collections (those starting with *)
   const featuredCollections = collections.filter(c => c.startsWith('*'))
 
-  // Build grouped items for the "All" view
   const groupedItems = selectedFilter.type === 'all' && !isFiltered
     ? (() => {
         const groups: { header: string; items: ClosetItemType[]; key: string; featured: boolean }[] = []
         
-        // Add featured collection sections at the top
         featuredCollections.forEach(collection => {
           const collectionItems = items.filter(item => item.collections.includes(collection))
           if (collectionItems.length > 0) {
@@ -72,7 +67,6 @@ export function ClosetGrid({
           }
         })
         
-        // Add regular sections
         sections.forEach(section => {
           const sectionItems = items.filter(item => item.section === section)
           if (sectionItems.length > 0) {

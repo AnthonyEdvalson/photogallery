@@ -9,7 +9,6 @@ a {
   text-decoration-thickness: 1px;
 }
 
-/* Full-width banner at top */
 .closet-header__banner {
   position: relative;
   width: 100%;
@@ -55,7 +54,6 @@ a {
   font-feature-settings: "ss03";
 }
 
-/* Info section below banner */
 .closet-header__info {
   position: relative;
   padding: 60px 20px 80px;
