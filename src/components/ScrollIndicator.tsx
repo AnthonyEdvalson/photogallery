@@ -7,6 +7,7 @@ type ScrollIndicatorProps = {
 
 export function ScrollIndicator({ targetRef }: ScrollIndicatorProps) {
   const [isVisible, setIsVisible] = useState(false)
+  const [isFadingOut, setIsFadingOut] = useState(false)
   const [isDismissed, setIsDismissed] = useState(false)
   const dismissTimerRef = useRef<number | null>(null)
 
@@ -19,8 +20,8 @@ export function ScrollIndicator({ targetRef }: ScrollIndicatorProps) {
   }, [])
 
   const dismissWithFade = () => {
-    if (isDismissed) return
-    setIsVisible(false)
+    if (isDismissed || isFadingOut) return
+    setIsFadingOut(true)
     if (dismissTimerRef.current !== null) {
       window.clearTimeout(dismissTimerRef.current)
     }
@@ -30,7 +31,7 @@ export function ScrollIndicator({ targetRef }: ScrollIndicatorProps) {
   }
 
   useEffect(() => {
-    if (isDismissed) return
+    if (isDismissed || isFadingOut) return
 
     if (window.scrollY > 0) {
       dismissWithFade()
@@ -42,10 +43,10 @@ export function ScrollIndicator({ targetRef }: ScrollIndicatorProps) {
     }, 1000)
 
     return () => window.clearTimeout(timer)
-  }, [isDismissed])
+  }, [isDismissed, isFadingOut])
 
   useEffect(() => {
-    if (isDismissed) return
+    if (isDismissed || isFadingOut) return
 
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -55,7 +56,7 @@ export function ScrollIndicator({ targetRef }: ScrollIndicatorProps) {
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [isDismissed])
+  }, [isDismissed, isFadingOut])
 
   const handleClick = () => {
     dismissWithFade()
@@ -67,7 +68,7 @@ export function ScrollIndicator({ targetRef }: ScrollIndicatorProps) {
   return (
     <button
       type="button"
-      className={`closet-header__scroll-indicator${isVisible ? ' is-visible' : ''}`}
+      className={`closet-header__scroll-indicator${isVisible ? ' is-visible' : ''}${isFadingOut ? ' is-fading-out' : ''}`}
       onClick={handleClick}
       aria-label="Scroll to header information"
     >

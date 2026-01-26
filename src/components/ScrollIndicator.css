@@ -25,3 +25,8 @@
   transform: translate(-50%, 0);
 }
 
+.closet-header__scroll-indicator.is-fading-out {
+  opacity: 0;
+  transform: translate(-50%, 20px);
+}
+
