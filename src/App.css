@@ -31,3 +31,38 @@
 .error {
   color: #e17055;
 }
+
+.cart-limit-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.cart-limit-notice {
+  background: var(--bg);
+  border: 1px solid var(--fg);
+  padding: 24px 32px;
+  max-width: 320px;
+  text-align: center;
+}
+
+.cart-limit-notice p {
+  margin: 0 0 16px;
+  color: var(--fg);
+}
+
+.cart-limit-notice button {
+  padding: 8px 24px;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  cursor: pointer;
+}

@@ -9,10 +9,17 @@ import type { FilterSelection } from './types'
 import './App.css'
 
 const CART_STORAGE_KEY = 'photogallery-cart'
+const CART_MAX_ITEMS_DEFAULT = 15
 
 function getClientNameFromUrl(): string | null {
   const params = new URLSearchParams(window.location.search)
   return params.get('name')
+}
+
+function getCartMaxFromUrl(): number {
+  const params = new URLSearchParams(window.location.search)
+  const n = parseInt(params.get('n') ?? '', 10)
+  return n > 0 ? n : CART_MAX_ITEMS_DEFAULT
 }
 
 function getItemUidFromHash(): number | null {
@@ -54,8 +61,10 @@ function App() {
   const deferredSearchQuery = useDeferredValue(searchQuery)
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [selectedItemUid, setSelectedItemUid] = useState<number | null>(() => getItemUidFromHash())
+  const [showCartLimitNotice, setShowCartLimitNotice] = useState(false)
   
   const clientName = useMemo(() => getClientNameFromUrl(), [])
+  const cartMaxItems = useMemo(() => getCartMaxFromUrl(), [])
   const isCartEnabled = clientName !== null
 
   useEffect(() => {
@@ -109,15 +118,20 @@ Speak friend and enter.`);
 
   const toggleCart = useCallback((itemId: string) => {
     setCart(prev => {
-      const next = new Set(prev)
-      if (next.has(itemId)) {
+      if (prev.has(itemId)) {
+        const next = new Set(prev)
         next.delete(itemId)
-      } else {
-        next.add(itemId)
+        return next
       }
+      if (prev.size >= cartMaxItems) {
+        setShowCartLimitNotice(true)
+        return prev
+      }
+      const next = new Set(prev)
+      next.add(itemId)
       return next
     })
-  }, [])
+  }, [cartMaxItems])
 
   function removeFromCart(itemId: string) {
     setCart(prev => {
@@ -195,6 +209,16 @@ Speak friend and enter.`);
           onClose={() => setIsCartOpen(false)}
           clientName={clientName}
         />
+      )}
+
+      {showCartLimitNotice && (
+        <div className="cart-limit-overlay" onClick={() => setShowCartLimitNotice(false)}>
+          <div className="cart-limit-notice" onClick={(e) => e.stopPropagation()}>
+            <h2>Overencumbered!</h2>
+            <p>Your pack may only carry up to {cartMaxItems} items</p>
+            <button onClick={() => setShowCartLimitNotice(false)}>OK</button>
+          </div>
+        </div>
       )}
     </div>
   )
